@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_play_asset_delivery/flutter_play_asset_delivery.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('flutter_play_asset_delivery');
