@@ -25,8 +25,8 @@ class _MyAppState extends State<MyApp> {
 
     // get an asset file
     // final videoFile = FlutterPlayAssetDelivery.getAssetFile("video.mp4");
-    
-    // get an absolute path of a file 
+
+    // get an absolute path of a file
     image = FlutterPlayAssetDelivery.getAssetFile("flutter.png");
   }
 

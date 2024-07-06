@@ -2,6 +2,7 @@ apply plugin: 'com.android.asset-pack'
 assetPack {
     packName = "app_asset_pack"
     dynamicDelivery {
+//        deliveryType = "[ install-time | fast-follow | on-demand ]" // delivery mode
         deliveryType = "install-time" // delivery mode
     }
 }
