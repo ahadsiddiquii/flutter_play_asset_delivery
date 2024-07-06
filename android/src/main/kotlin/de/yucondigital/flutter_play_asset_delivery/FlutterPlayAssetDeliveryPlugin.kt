@@ -11,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
+import java.io.FileOutputStream
 
 /** FlutterPlayAssetDeliveryPlugin */
 class FlutterPlayAssetDeliveryPlugin : FlutterPlugin, MethodCallHandler {
@@ -29,14 +30,12 @@ class FlutterPlayAssetDeliveryPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
 
-        if (assetList.isEmpty()) fetchAllAssets()
-
         if (call.method == "getAssetFile") {
             var assetName: String = call.arguments.toString()
 
             if (assetList.contains(assetName)) {
-                val file: File = createTempFile()
-                file.writeBytes(assetManager.open(assetName).readBytes())
+                val file = File.createTempFile("asset_", null)
+                copyAssetToFile(assetName, file)
                 result.success(file.absolutePath)
             } else {
                 result.error("Asset not found", "Asset could not be found.", null)
@@ -46,6 +45,18 @@ class FlutterPlayAssetDeliveryPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
+
+    private fun copyAssetToFile(assetName: String, file: File) {
+        assetManager.open(assetName).use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                val buffer = ByteArray(1024)
+                var length: Int
+                while (inputStream.read(buffer).also { length = it } > 0) {
+                    outputStream.write(buffer, 0, length)
+                }
+            }
+        }
+    }
     private fun fetchAllAssets() {
         assetList = assetManager.list("")?.asList() ?: emptyList()
     }
