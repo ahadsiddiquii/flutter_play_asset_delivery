@@ -49,7 +49,7 @@ class FlutterPlayAssetDeliveryPlugin : FlutterPlugin, MethodCallHandler {
     private fun copyAssetToFile(assetName: String, file: File) {
         assetManager.open(assetName).use { inputStream ->
             FileOutputStream(file).use { outputStream ->
-                val buffer = ByteArray(1024)
+                val buffer = ByteArray(4096)
                 var length: Int
                 while (inputStream.read(buffer).also { length = it } > 0) {
                     outputStream.write(buffer, 0, length)
